@@ -158,3 +158,23 @@
 
     *part5_WholeDescSeq_model.py*
 
+7. Word by Word Model
+
+    참고 모델: [A Neural Image Caption Generator](https://arxiv.org/abs/1411.4555)
+    
+    * step 1: split into input and output pair
+        
+            in_seq, out_seq = seq[:i], seq[i]
+            
+    * step 2: pad input sequence
+        
+            in_seq = pad_sequences([in_seq], maxlen=max_length)[0]
+
+    * step 3: output word encode one-hot
+            
+            out_seq = to_categorical([out_seq], num_classes=vocab_size)[0]
+            
+
+    *part6_wordxword_model.py*
+    
+    

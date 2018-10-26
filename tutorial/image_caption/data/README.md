@@ -44,4 +44,20 @@
 
 3. Pre-Calculate Photo Features
 
+    Pre-trained 모델을 이용한 방법으로 진행
+    
+    * step 1: Load VGG Model
+    
+          from keras.applications.vgg16 import VGG16
+          in_layer = Input(shape=(224,224,3))
+          model = VGG16(include_top=False, input_tensor=in_layer, pooling='avg')
+    
+    * step 2: Dense Output Layer remove from model
+    
+          include_top = False
+
+    * step 3: call predict()
+    
+    
+    part2_pre_calculate.py
 

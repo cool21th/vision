@@ -106,3 +106,55 @@
     *part4_parpare_desc.py*
 
 
+6. Whole Description Sequence Model
+
+    사진에서 특징들을 추출한 후 단어와 Mapping으로 나열한 형태로
+    Encoder-Decorder RNN 모델과는 다른형태
+    
+    * step 1: 전처리 이미지를 memory load
+    
+            def load_doc(filename):
+                file = open(filename, 'r')
+                text = file.read()
+                file.close()
+                return text
+                
+            def load_clean_description(filename):
+                doc = load_doc(filename)
+                descriptions = dict()
+                for line in doc.split('\n'):
+                    tokens = line.split()
+                    image_id, image_desc = tokens[0], tokens[1:]
+                    decriptions[image_id] = ' '.join(image_desc)
+                return descriptions
+            descriptions = load_clean_descriptions('descriptions.txt')
+
+    * step 2: extract text
+        
+            desc_text = list(descriptions.values())
+
+    * step 3: Mapping Vocabulary to an integer
+    
+            from kears.preprocessing.text import Tokenizer
+            tokenizer = Tokenizer()
+            tokenizer.fit_on_texts(desc_text)
+            vocab_size = len(tokenizer.word_index) + 1
+
+    * step 4: integer encode descriptions
+    
+            sequences = tokenizer.texts_to_sequences(desc_text)
+
+    * step 5: Pad the sequence(모든 encoded sequence들이 같은 길이를 가져야 하기 때문)
+    
+            from keras.preprocessing.sequence import pad_sequences
+            max_len = max(len(s) for s in sequences)
+            padded = padd_sequences(sequences, maxlen=max_length, padding='post')
+
+    * step 6: One hot encode
+    
+            from keras.utils import to_categorical
+            y = to_categorical(padded, num_classes=vocab_size)
+            
+
+    *part5_WholeDescSeq_model.py*
+

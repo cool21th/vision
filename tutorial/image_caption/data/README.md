@@ -90,4 +90,19 @@
     *part3_load_desc.py*
 
 
+5. Prepare Description Text
+
+    text 전처리 : 모든 token을 소문자, 구두점 삭제, 's/ 'a'등의 작은 문자 삭제
+    
+            def clean_descriptions(descriptions):
+                table = str.maketrans('','', string.punctuation)
+                for key, desc in descriptions.items():
+                    desc = desc.split()
+                    desc = [word.lower() for word in desc]
+                    desc = [w.translate(table) for w in desc]
+                    desc = [word for word in desc if len(word) >1]
+                    descpriptions[key] = ' '.join(desc)
+
+    *part4_parpare_desc.py*
+
 

@@ -40,7 +40,7 @@
           
           image_id = filename.split('.')[0]
 
-  part1_load_data.py
+    *part1_load_data.py*
 
 3. Pre-Calculate Photo Features
 
@@ -59,5 +59,35 @@
     * step 3: call predict()
     
     
-    part2_pre_calculate.py
+    *part2_pre_calculate.py*
+    
+    
+4. Load Description
+
+    Flickr8K.token.txt 파일에서 image에 대한 설명이 있음(1사진에 여러 개의 설명)
+    
+    * step 1: Annotation file('Flickr8K.token.txt') load 
+    
+            def load_doc(filename):
+                file = open(filename, 'r')
+                text = file.read()
+                file.close()
+                return text
+
+    * step 2: split each line
+        
+            tokens = line.split()
+            image_id, image_desc = tokens[0], tokens[1:]
+
+    * step 3: remove filename extension
+    
+            image_id = image_id.split('.')[0]
+
+    * step 4: convert description tokens back to string
+        
+            image_desc = ' '.join(image_desc)
+
+    *part3_load_desc.py*
+
+
 

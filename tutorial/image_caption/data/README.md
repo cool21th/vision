@@ -177,4 +177,8 @@
 
     *part6_wordxword_model.py*
     
+8. Progressive Loading 
+
+    Keras supports progressively loaded datasets by using the fit_generator() function on the model.
     
+    *part7_progressive_Loading.py*

@@ -182,3 +182,65 @@
     Keras supports progressively loaded datasets by using the fit_generator() function on the model.
     
     *part7_progressive_Loading.py*
+    
+
+## [How to Develop a Deep Learning Photo Caption Generator from Scratch](https://machinelearningmastery.com/develop-a-deep-learning-caption-generation-model-in-python/)
+
+1. Loading Data
+
+    How to Prepare a Photo Caption Dataset for Training a Deep Learning Model에서 이미 정의된 내용
+
+2. Defining the Model
+    
+    Merge-Model 기준으로 작성
+    
+    참고 논문: [Where to put the Image in an Image Caption Generator](https://arxiv.org/abs/1703.09137), [What is the Role of Recurrent Neural Networks (RNNs) in an Image Caption Generator?](https://arxiv.org/abs/1708.02043)
+    
+    word -> RNN  -> FF
+            image->
+
+    * Photo Feautre Extractor : VGG16모델 사용
+    
+    * Sequence Processor : LSTM사용
+    
+    * Decoder : Merge-model을 통한 최종 예측
+    
+            def define_mode(vocab_sizze, max_length):
+                # feature extractor model
+                inputs1 = Input(shape(4096,))
+                fe1 = Dropout(0.5)(inputs1)
+                fe2 = Dense(256, activation='relu')(fe1)
+                # sequence model
+                inputs2 = Input(shape(max_length,))
+                se1 = Embedding(vocab_size, 256, mask_zero=True)(inputs2)
+                se2 = Dropout(0.5)(se1)
+                se3 = LSTM(256)(se2)
+                # decoder model
+                decoder1 = add([fe2, se3])
+                decoder2 = Dense(256, activation='relu')(decoder1)
+                outputs = Dense(vocab_size, activation='softmax')(decoder2)
+                # tie it together [image, seq] [word]
+                model = Model(inputs=[inputs1, inputs2], outputs=outputs)
+                model.compile(loss='categorical_crossentropy', optimizer='adam')
+                # summarize model
+                print(model.summary())
+                plot_model(model, to_file='model.png', show_shapes=True)
+                return model
+                
+                
+    
+3. Fitting the Model
+
+    ModelCheckpoint in Keras and specifying it to monitor the minimum loss on the validation dataset and save the model to a file that has both the training and validation loss in the filename.
+    
+        # define checkpoint callback
+        filepath = 'model-ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5'
+        checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
+        
+        # fit model
+        model.fit([X1train, X2train], ytrain, epochs=20, verbose=2, callbacks=[checkpoint], validation_data=([X1test, X2test],ytest))
+        
+
+4. Complete Example
+
+    *part8_deeplearning_model.py*

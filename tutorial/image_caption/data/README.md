@@ -189,6 +189,8 @@
 1. Loading Data
 
     How to Prepare a Photo Caption Dataset for Training a Deep Learning Model에서 이미 정의된 내용
+    다만, photo데이터 extract할 때, VGG 모델의 마지막 layer는 classification부분이기 때문에 제외 
+        -> model.pop()을 통해서 re-strcuture 
 
 2. Defining the Model
     
@@ -242,5 +244,8 @@
         
 
 4. Complete Example
-
+    
+    *part8_prepapre_data.py*
+    *part8_prepapre_text.py*
+    *part8_loading_data.py*
     *part8_deeplearning_model.py*
